@@ -112,7 +112,7 @@ export default function HomepageImages() {
         title: uploadFormData.title,
         description: uploadFormData.description,
         category: uploadFormData.category as 'gallery' | 'hero' | 'location' | 'facility',
-        subcategory: uploadFormData.subcategory,
+        subcategory: uploadFormData.subcategory as 'incheon' | 'anyang' | 'main' | 'sign' | 'lobby' | 'room' | 'therapy' | 'general' | 'rehabilitation' | 'cognitive' | 'birthday',
         order_num: uploadFormData.order_num
       })
       
