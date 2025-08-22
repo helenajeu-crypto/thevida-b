@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 const SHARED_ACCESS_KEY = 'thevida_shared_2024'
 
-export default function AccessPage() {
+function AccessPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [isValidating, setIsValidating] = useState(true)
@@ -75,5 +75,23 @@ export default function AccessPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function AccessPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <h1 className="text-xl font-semibold text-gray-900 mb-2">로딩 중...</h1>
+            <p className="text-gray-600">잠시만 기다려주세요.</p>
+          </div>
+        </div>
+      </div>
+    }>
+      <AccessPageContent />
+    </Suspense>
   )
 }

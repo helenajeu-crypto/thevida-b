@@ -43,8 +43,8 @@ export default function HomepageImages() {
   const [uploadFormData, setUploadFormData] = useState({
     title: '',
     description: '',
-    category: 'hero' as string,
-    subcategory: 'main' as string,
+    category: 'hero' as 'gallery' | 'hero' | 'location' | 'facility',
+    subcategory: 'main' as 'incheon' | 'anyang' | 'main' | 'sign' | 'lobby' | 'room' | 'therapy' | 'general' | 'rehabilitation' | 'cognitive' | 'birthday',
     order_num: 0
   })
 
@@ -112,7 +112,7 @@ export default function HomepageImages() {
         title: uploadFormData.title,
         description: uploadFormData.description,
         category: uploadFormData.category as 'gallery' | 'hero' | 'location' | 'facility',
-        subcategory: uploadFormData.subcategory as 'incheon' | 'anyang' | 'main' | 'sign' | 'lobby' | 'room' | 'therapy' | 'general' | 'rehabilitation' | 'cognitive' | 'birthday',
+        subcategory: uploadFormData.subcategory,
         order_num: uploadFormData.order_num
       })
       
@@ -234,8 +234,8 @@ export default function HomepageImages() {
                   onChange={(e) => {
                     setUploadFormData({
                       ...uploadFormData, 
-                      category: e.target.value,
-                      subcategory: subcategoryOptions[e.target.value as keyof typeof subcategoryOptions]?.[0]?.value || 'main'
+                      category: e.target.value as 'gallery' | 'hero' | 'location' | 'facility',
+                      subcategory: (subcategoryOptions[e.target.value as keyof typeof subcategoryOptions]?.[0]?.value || 'main') as 'incheon' | 'anyang' | 'main' | 'sign' | 'lobby' | 'room' | 'therapy' | 'general' | 'rehabilitation' | 'cognitive' | 'birthday'
                     })
                   }}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2"
@@ -252,7 +252,7 @@ export default function HomepageImages() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">서브카테고리</label>
                 <select
                   value={uploadFormData.subcategory}
-                  onChange={(e) => setUploadFormData({...uploadFormData, subcategory: e.target.value})}
+                  onChange={(e) => setUploadFormData({...uploadFormData, subcategory: e.target.value as 'incheon' | 'anyang' | 'main' | 'sign' | 'lobby' | 'room' | 'therapy' | 'general' | 'rehabilitation' | 'cognitive' | 'birthday'})}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2"
                 >
                   {subcategoryOptions[uploadFormData.category as keyof typeof subcategoryOptions]?.map(option => (
@@ -334,8 +334,8 @@ export default function HomepageImages() {
                   onChange={(e) => {
                     setUploadFormData({
                       ...uploadFormData, 
-                      category: e.target.value,
-                      subcategory: subcategoryOptions[e.target.value as keyof typeof subcategoryOptions]?.[0]?.value || 'main'
+                      category: e.target.value as 'gallery' | 'hero' | 'location' | 'facility',
+                      subcategory: (subcategoryOptions[e.target.value as keyof typeof subcategoryOptions]?.[0]?.value || 'main') as 'incheon' | 'anyang' | 'main' | 'sign' | 'lobby' | 'room' | 'therapy' | 'general' | 'rehabilitation' | 'cognitive' | 'birthday'
                     })
                   }}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2"
@@ -352,7 +352,7 @@ export default function HomepageImages() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">서브카테고리</label>
                 <select
                   value={uploadFormData.subcategory}
-                  onChange={(e) => setUploadFormData({...uploadFormData, subcategory: e.target.value})}
+                  onChange={(e) => setUploadFormData({...uploadFormData, subcategory: e.target.value as 'incheon' | 'anyang' | 'main' | 'sign' | 'lobby' | 'room' | 'therapy' | 'general' | 'rehabilitation' | 'cognitive' | 'birthday'})}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2"
                 >
                   {subcategoryOptions[uploadFormData.category as keyof typeof subcategoryOptions]?.map(option => (

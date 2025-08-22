@@ -34,7 +34,7 @@ export interface HomepageImage {
   description?: string
   imageUrl: string
   category: 'gallery' | 'hero' | 'location' | 'facility'
-  subcategory?: string
+  subcategory?: 'incheon' | 'anyang' | 'main' | 'sign' | 'lobby' | 'room' | 'therapy' | 'general' | 'rehabilitation' | 'cognitive' | 'birthday'
   order_num: number
   isActive: number
   uploadDate: string
