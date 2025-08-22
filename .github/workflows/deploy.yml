@@ -1,0 +1,70 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build application
+      run: npm run build
+      env:
+        NODE_ENV: production
+        
+    - name: Validate secrets
+      run: |
+        if [ -z "${{ secrets.SERVER_HOST }}" ]; then
+          echo "❌ SERVER_HOST secret is not configured"
+          exit 1
+        fi
+        if [ -z "${{ secrets.SERVER_USER }}" ]; then
+          echo "❌ SERVER_USER secret is not configured"
+          exit 1
+        fi
+        if [ -z "${{ secrets.SERVER_SSH_KEY }}" ]; then
+          echo "❌ SERVER_SSH_KEY secret is not configured"
+          exit 1
+        fi
+        echo "✅ All required secrets are configured"
+        
+    - name: Deploy to server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        port: ${{ secrets.SERVER_PORT || '22' }}
+        script: |
+          cd /var/www/thevida-admin-new
+          git pull origin main
+          npm ci --production
+          chmod +x scripts/*.sh
+          ./scripts/deploy.sh
+          
+    - name: Notify deployment status
+      if: always()
+      env:
+        JOB_STATUS: ${{ job.status }}
+      run: |
+        if [ "$JOB_STATUS" == 'success' ]; then
+          echo "✅ 배포가 성공적으로 완료되었습니다!"
+          echo "🌐 https://admin.thevida.co.kr 에서 확인하세요."
+        else
+          echo "❌ 배포 중 오류가 발생했습니다."
+        fi
