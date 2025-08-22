@@ -1,6 +1,33 @@
 import axios from 'axios'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+// API URL을 동적으로 설정
+const getApiBaseUrl = () => {
+  // 환경 변수가 설정되어 있으면 사용
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  
+  // 브라우저 환경에서 현재 도메인 확인
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    const protocol = window.location.protocol;
+    
+    // 로컬 개발 환경
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return 'http://localhost:3001';
+    }
+    
+    // 프로덕션 환경 (admin.thevida.co.kr)
+    if (hostname === 'admin.thevida.co.kr') {
+      return 'https://admin.thevida.co.kr';
+    }
+  }
+  
+  // 기본값
+  return 'http://localhost:3001';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 export interface HomepageImage {
   id: string | number;
