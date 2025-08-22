@@ -221,17 +221,24 @@ export const activityAPI = {
 
   // 활동기록 업로드
   upload: async (formData: FormData): Promise<{ id: string; message: string }> => {
-    const response = await fetch(`${API_BASE_URL}/api/activity-records`, {
-      method: 'POST',
-      body: formData,
-    });
-    
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || '활동기록 업로드에 실패했습니다.');
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/activity-records`, {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: '서버 응답을 파싱할 수 없습니다.' }));
+        throw new Error(errorData.error || `서버 오류: ${response.status} ${response.statusText}`);
+      }
+      
+      return response.json();
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error('네트워크 오류가 발생했습니다.');
     }
-    
-    return response.json();
   },
 
   // 활동기록 수정

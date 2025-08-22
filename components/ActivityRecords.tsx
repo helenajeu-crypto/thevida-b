@@ -64,9 +64,34 @@ export default function ActivityRecords() {
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || [])
+    
+    // 파일 검증
+    const validFiles = files.filter(file => {
+      // 파일 크기 검증 (10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        alert(`파일 "${file.name}"이 너무 큽니다. 최대 10MB까지 업로드 가능합니다.`)
+        return false
+      }
+      
+      // 파일 형식 검증
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+      if (!allowedTypes.includes(file.type)) {
+        alert(`파일 "${file.name}"의 형식이 지원되지 않습니다. JPG, PNG, GIF, WebP 형식만 지원됩니다.`)
+        return false
+      }
+      
+      return true
+    })
+    
+    // 최대 파일 개수 검증
+    if (uploadFormData.images.length + validFiles.length > 10) {
+      alert('최대 10개까지 이미지를 업로드할 수 있습니다.')
+      return
+    }
+    
     setUploadFormData(prev => ({ 
       ...prev, 
-      images: [...prev.images, ...files]
+      images: [...prev.images, ...validFiles]
     }))
   }
 
@@ -116,7 +141,15 @@ export default function ActivityRecords() {
       alert('활동기록이 성공적으로 업로드되었습니다.')
     } catch (error) {
       console.error('활동기록 업로드 실패:', error)
-      alert('활동기록 업로드에 실패했습니다.')
+      let errorMessage = '활동기록 업로드에 실패했습니다.'
+      
+      if (error instanceof Error) {
+        errorMessage = error.message
+      } else if (typeof error === 'object' && error !== null && 'message' in error) {
+        errorMessage = String(error.message)
+      }
+      
+      alert(`업로드 실패: ${errorMessage}`)
     }
   }
 
@@ -283,6 +316,9 @@ export default function ActivityRecords() {
                 onChange={handleImageUpload}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
+              <p className="mt-1 text-xs text-gray-500">
+                지원 형식: JPG, PNG, GIF, WebP | 최대 파일 크기: 10MB | 최대 10개 파일
+              </p>
               
               {/* 업로드된 이미지 미리보기 */}
               {uploadFormData.images.length > 0 && (
