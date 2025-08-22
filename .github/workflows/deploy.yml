@@ -1,9 +1,10 @@
-name: Deploy to Production
+name: Deploy to Production (Disabled)
 
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
+# 수동 배포를 사용하므로 GitHub Actions 비활성화
+# on:
+#   push:
+#     branches: [ main ]
+#   workflow_dispatch:
 
 jobs:
   deploy:

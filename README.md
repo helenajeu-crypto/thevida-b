@@ -97,6 +97,51 @@ npm run dev
 - 키 기반: `http://localhost:3000?key=thevida_admin_2024`
 - 이메일 기반: `http://localhost:3000?email=helena.jeu@gmail.com`
 
+## 배포
+
+### 수동 배포 (권장)
+현재 수동 배포 방식을 사용하고 있습니다.
+
+#### 서버에서 실행할 명령어:
+```bash
+# 1. 코드 업데이트
+git pull origin main
+
+# 2. 의존성 설치 및 빌드
+npm ci --production
+npm run build
+
+# 3. PM2 재시작
+pm2 restart all
+
+# 4. 상태 확인
+pm2 status
+```
+
+#### 배포 스크립트 사용:
+```bash
+# 배포 스크립트 실행
+chmod +x scripts/deploy.sh
+./scripts/deploy.sh
+```
+
+### 자동 배포 (GitHub Actions)
+자동 배포를 사용하려면 GitHub Secrets를 설정해야 합니다:
+
+1. GitHub 저장소 → Settings → Secrets and variables → Actions
+2. 다음 secrets 추가:
+   - `SERVER_HOST`: 서버 IP 주소
+   - `SERVER_USER`: 서버 사용자명
+   - `SERVER_SSH_KEY`: SSH 개인키
+   - `SERVER_PORT`: SSH 포트 (기본값: 22)
+
+### 환경 변수 설정 (프로덕션)
+```bash
+# .env.local 파일 생성
+NEXT_PUBLIC_API_URL=https://admin.thevida.co.kr
+NEXT_PUBLIC_ADMIN_ACCESS_KEY=thevida_shared_2024
+```
+
 ## 프로젝트 구조
 
 ```
