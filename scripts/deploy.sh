@@ -6,7 +6,7 @@ echo "🚀 TheVida Admin 배포를 시작합니다..."
 
 # 환경 변수 설정
 export NODE_ENV=production
-export THEVIDA_API_URL=https://admin.thevida.co.kr/api
+export NEXT_PUBLIC_API_URL=https://admin.thevida.co.kr
 
 # Git 상태 확인
 echo "📋 Git 상태를 확인합니다..."
@@ -54,7 +54,8 @@ module.exports = {
       args: 'start',
       env: {
         NODE_ENV: 'production',
-        PORT: 3000
+        PORT: 3000,
+        NEXT_PUBLIC_API_URL: 'https://admin.thevida.co.kr'
       },
       instances: 1,
       autorestart: true,

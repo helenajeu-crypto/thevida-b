@@ -6,8 +6,9 @@ import Sidebar from '@/components/Sidebar'
 import Content from '@/components/Content'
 import Gallery from '@/components/Gallery'
 import HomepageImages from '@/components/HomepageImages'
+import ActivityRecords from '@/components/ActivityRecords'
 
-type PageType = 'content' | 'gallery' | 'homepage-images'
+type PageType = 'content' | 'gallery' | 'homepage-images' | 'activity-records'
 
 export default function AdminPage() {
   const [currentPage, setCurrentPage] = useState<PageType>('content')
@@ -25,6 +26,8 @@ export default function AdminPage() {
         return <HomepageImages />
       case 'gallery':
         return <Gallery />
+      case 'activity-records':
+        return <ActivityRecords />
       default:
         return <Content />
     }

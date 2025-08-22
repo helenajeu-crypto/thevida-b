@@ -17,6 +17,19 @@ export interface HomepageImage {
   actualPath?: string;
 }
 
+export interface ActivityRecord {
+  id: string;
+  title: string;
+  content: string;
+  images: string[];
+  location: 'incheon' | 'anyang';
+  category: 'rehabilitation' | 'cognitive' | 'birthday';
+  date: string;
+  isActive: boolean;
+  uploadDate: string;
+  author: string;
+}
+
 // 이미지 관련 API
 export const imageAPI = {
   // 모든 이미지 조회
@@ -179,6 +192,75 @@ export const homepageImageAPI = {
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.error || '순서 변경에 실패했습니다.');
+    }
+    
+    return response.json();
+  },
+};
+
+// 활동기록 관련 API
+export const activityAPI = {
+  // 모든 활동기록 조회
+  getAll: async (location?: string, category?: string): Promise<ActivityRecord[]> => {
+    let url = `${API_BASE_URL}/api/activity-records`;
+    const params = new URLSearchParams();
+    
+    if (location) params.append('location', location);
+    if (category) params.append('category', category);
+    
+    if (params.toString()) {
+      url += `?${params.toString()}`;
+    }
+    
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('활동기록 조회에 실패했습니다.');
+    }
+    return response.json();
+  },
+
+  // 활동기록 업로드
+  upload: async (formData: FormData): Promise<{ id: string; message: string }> => {
+    const response = await fetch(`${API_BASE_URL}/api/activity-records`, {
+      method: 'POST',
+      body: formData,
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || '활동기록 업로드에 실패했습니다.');
+    }
+    
+    return response.json();
+  },
+
+  // 활동기록 수정
+  update: async (id: string, data: Partial<ActivityRecord>): Promise<{ message: string }> => {
+    const response = await fetch(`${API_BASE_URL}/api/activity-records/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || '활동기록 수정에 실패했습니다.');
+    }
+    
+    return response.json();
+  },
+
+  // 활동기록 삭제
+  delete: async (id: string): Promise<{ message: string }> => {
+    const response = await fetch(`${API_BASE_URL}/api/activity-records/${id}`, {
+      method: 'DELETE',
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || '활동기록 삭제에 실패했습니다.');
     }
     
     return response.json();

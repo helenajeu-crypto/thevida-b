@@ -3,13 +3,14 @@
 import { 
   DocumentTextIcon, 
   PhotoIcon,
-  PhotoIcon as ImageIcon
+  PhotoIcon as ImageIcon,
+  CalendarDaysIcon
 } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
 import { useAuthStore } from '@/lib/authStore'
 import { UserRole } from '@/lib/types'
 
-type PageType = 'content' | 'gallery' | 'homepage-images'
+type PageType = 'content' | 'gallery' | 'homepage-images' | 'activity-records'
 
 interface SidebarProps {
   currentPage: PageType
@@ -20,7 +21,8 @@ const getMenuItems = (userRole: UserRole) => {
   const baseItems = [
     { id: 'content', name: '홈페이지 관리', icon: DocumentTextIcon },
     { id: 'homepage-images', name: '홈페이지 이미지', icon: ImageIcon },
-    { id: 'gallery', name: '활동기록 업로드', icon: PhotoIcon },
+    { id: 'gallery', name: '갤러리', icon: PhotoIcon },
+    { id: 'activity-records', name: '활동기록 업로드', icon: CalendarDaysIcon },
   ]
 
   return baseItems
